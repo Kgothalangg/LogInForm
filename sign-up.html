@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="sign-up-style.css">
+</head>
+<body>
+    <div class="signup-container">
+        <div class="logo">
+            <img src="images/hope.png" alt="Company Logo">
+        </div>
+        <h1>Create Account</h1>
+        <p class="login-prompt">Already have an account? <a href="login.html" class="login-link">Log in</a></p>
+        
+        <form id="signupForm">
+            <div class="name-fields">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="firstName" class="input-field" placeholder="Enter first name" required>
+                    <div id="firstName-error" class="error-message">Please enter your first name</div>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" class="input-field" placeholder="Enter last name" required>
+                    <div id="lastName-error" class="error-message">Please enter your last name</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="email" class="input-field" placeholder="Enter your email" required>
+                <div id="email-error" class="error-message">Please enter a valid email address</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" id="password" class="input-field" placeholder="Create a password" required>
+                <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                <div id="password-error" class="error-message">Password must be at least 8 characters</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" id="confirmPassword" class="input-field" placeholder="Confirm your password" required>
+                <i class="fas fa-eye password-toggle" id="toggleConfirmPassword"></i>
+                <div id="confirmPassword-error" class="error-message">Passwords don't match</div>
+            </div>
+            
+            <div class="terms">
+                <input type="checkbox" id="agreeTerms" required>
+                <label for="agreeTerms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+            </div>
+            
+            <button type="submit" class="signup-btn">Sign Up</button>
+        </form>
+        
+        <div class="divider">
+            <div class="divider-line"></div>
+            <div class="divider-text">or sign up with</div>
+            <div class="divider-line"></div>
+        </div>
+        
+        <div class="social-login">
+            <a href="https://accounts.google.com/signup" target="_blank" class="social-btn google">
+                <i class="fab fa-google social-icon"></i>
+                <span class="social-text"></span>
+            </a>
+            <a href="https://www.facebook.com/signup" target="_blank" class="social-btn facebook">
+                <i class="fab fa-facebook-f social-icon"></i>
+                <span class="social-text"></span>
+            </a>
+            <a href="https://appleid.apple.com/" target="_blank" class="social-btn apple">
+                <i class="fab fa-apple social-icon"></i>
+                <span class="social-text"></span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Password toggle functionality
+            const togglePassword = document.getElementById('togglePassword');
+            const password = document.getElementById('password');
+            const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+            const confirmPassword = document.getElementById('confirmPassword');
+            
+            togglePassword.addEventListener('click', function() {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                this.classList.toggle('fa-eye-slash');
+            });
+            
+            toggleConfirmPassword.addEventListener('click', function() {
+                const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPassword.setAttribute('type', type);
+                this.classList.toggle('fa-eye-slash');
+            });
+            
+            // Form validation
+            const signupForm = document.getElementById('signupForm');
+            const firstNameInput = document.getElementById('firstName');
+            const lastNameInput = document.getElementById('lastName');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                let isValid = true;
+                
+                // First Name validation
+                if (firstNameInput.value.trim() === '') {
+                    document.getElementById('firstName-error').style.display = 'block';
+                    firstNameInput.style.borderColor = '#ff6b6b';
+                    isValid = false;
+                } else {
+                    document.getElementById('firstName-error').style.display = 'none';
+                    firstNameInput.style.borderColor = '#555';
+                }
+                
+                // Last Name validation
+                if (lastNameInput.value.trim() === '') {
+                    document.getElementById('lastName-error').style.display = 'block';
+                    lastNameInput.style.borderColor = '#ff6b6b';
+                    isValid = false;
+                } else {
+                    document.getElementById('lastName-error').style.display = 'none';
+                    lastNameInput.style.borderColor = '#555';
+                }
+                
+                // Email validation
+                if (!validateEmail(emailInput.value)) {
+                    document.getElementById('email-error').style.display = 'block';
+                    emailInput.style.borderColor = '#ff6b6b';
+                    isValid = false;
+                } else {
+                    document.getElementById('email-error').style.display = 'none';
+                    emailInput.style.borderColor = '#555';
+                }
+                
+                // Password validation
+                if (passwordInput.value.length < 8) {
+                    document.getElementById('password-error').style.display = 'block';
+                    passwordInput.style.borderColor = '#ff6b6b';
+                    isValid = false;
+                } else {
+                    document.getElementById('password-error').style.display = 'none';
+                    passwordInput.style.borderColor = '#555';
+                }
+                
+                // Confirm Password validation
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    document.getElementById('confirmPassword-error').style.display = 'block';
+                    confirmPasswordInput.style.borderColor = '#ff6b6b';
+                    isValid = false;
+                } else {
+                    document.getElementById('confirmPassword-error').style.display = 'none';
+                    confirmPasswordInput.style.borderColor = '#555';
+                }
+                
+                // Terms checkbox validation
+                if (!document.getElementById('agreeTerms').checked) {
+                    alert('Please agree to the terms and conditions');
+                    isValid = false;
+                }
+                
+                // If form is valid, proceed with signup
+                if (isValid) {
+                    // Here you would typically send the data to your server
+                    console.log('Form submitted successfully');
+                    console.log('Name:', firstNameInput.value + ' ' + lastNameInput.value);
+                    console.log('Email:', emailInput.value);
+                    console.log('Password:', passwordInput.value);
+                    
+                    // For demo purposes, show an alert
+                    alert('Account created successfully! (This is a demo)');
+                    
+                    // Reset form
+                    signupForm.reset();
+                }
+            });
+            
+            // Email validation helper function
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+        });
+    </script>
+</body>
+</html>
